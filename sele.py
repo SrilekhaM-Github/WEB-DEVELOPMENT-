@@ -23,3 +23,43 @@ try:
 except:
     # else quit
     driver.quit()
+Method 1: Close all tabs except the current one
+
+from selenium import webdriver
+
+# Open a new browser window with multiple tabs
+driver = webdriver.Chrome()
+driver.get("https://www.google.com")
+driver.execute_script("window.open('https://www.bing.com');")
+driver.execute_script("window.open('https://www.yahoo.com');")
+
+# Get the current window handle
+current_window_handle = driver.current_window_handle
+
+# Close all tabs except the current one
+for window_handle in driver.window_handles:
+    if window_handle != current_window_handle:
+        driver.switch_to.window(window_handle)
+        driver.close()
+
+# Switch back to the original tab
+driver.switch_to.window(current_window_handle)
+
+2.Close a specific tab by its index
+
+# Close the second tab (index 1)
+driver.switch_to.window(driver.window_handles[1])
+driver.close()
+
+# Switch back to the original tab
+driver.switch_to.window(driver.window_handles[0])
+
+Close all tabs and open a new one
+
+# Close all tabs
+for window_handle in driver.window_handles:
+    driver.switch_to.window(window_handle)
+    driver.close()
+
+# Open a new tab
+driver.get("https://www.duckduckgo.com")
